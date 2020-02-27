@@ -1,0 +1,22 @@
+//for jsonserializable
+
+// import 'package:json_annotation/json_annotation.dart';
+// part 'jobsmodel.g.dart';
+
+// @JsonSerializable()
+// class Jobs{
+//   final int id;
+//   final String email;
+//   final String first_name;
+//   final String avatar;
+
+//   Jobs({
+// this.id,
+// this.email,
+// this.first_name,
+// this.avatar
+//   });
+
+//   factory Jobs.fromJson(Map<String, dynamic> json)=> _$JobsFromJson(json);
+//   Map<String, dynamic>tojson() => _$JobsToJson(this); 
+// }
