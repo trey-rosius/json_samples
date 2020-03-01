@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:peoplejobs/models/jobsmodel.dart';
-import 'package:peoplejobs/services/jobshttp.dart';
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'services/jobshttp.dart';
+
+
 
 void main() => runApp(MyApp());
 
@@ -27,22 +27,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  HttpService httpService = HttpService();
-  
-// List _jobs =[];
-// Future<List<Jobs>> _getJobs() async{
-// final  String url ="https://reqres.in/api/users";
-//  http.get(url).then((res){
-//    if (res.statusCode == 200) {
-//      Map jobs = jsonDecode(res.body);
-     
-//   setState(() {
-//     _jobs = jobs["data"];
-//   });
-//    }
-  
-// });
-// }
+
+
+  Future<Jobs> futureJob;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureJob = HttpService.getJobs();
+    print("here");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,61 +46,34 @@ class _MyHomePageState extends State<MyHomePage> {
          IconButton(icon: Icon(Icons.refresh), onPressed: null)
         ],
       ),
-      body: FutureBuilder(
-        future: httpService.getJobs(),
+      body: FutureBuilder<Jobs>(
+        future: futureJob,
         builder: ( context, snapshot){
           if (snapshot.hasData) {
-           
-            return 
-              
-              ListTile(
-                title: Text(snapshot.data.first_name),
-                subtitle: Text(snapshot.data.email),
-                leading: Image.network(snapshot.data.avatar),
+
+            return ListView.builder(itemBuilder: (context,index){
+              return ListTile(
+                title: Text(snapshot.data.data[index].first_name+" "+snapshot.data.data[index].last_name),
+                subtitle: Text(snapshot.data.data[index].email),
+                leading: ClipOval(child: Image.network(snapshot.data.data[index].avatar)),
               );
+            },
+            itemCount: snapshot.data.data.length,);
+              
+
           
             
           
             
-          }else{
-            return CircularProgressIndicator();
+          }else if(snapshot.hasError){
+            print('${snapshot.error}');
+            return Text('${snapshot.error}');
           }
+          // By default, show a loading spinner.
+          return CircularProgressIndicator();
         }
         ),
-         
-      //  _jobs.length == 0 ? Center(child:Text("No data")) : ListView.builder(
-      //    itemCount: _jobs.length,
-      //    itemBuilder: (context, index){
-      //      return ListTile(
-      //        title: Text(_jobs[index]['first_name']),
-      //        subtitle: Text(_jobs[index]['email']),
-      //        leading: Image.network(_jobs[index]['avatar']),
-      //      );
-      //    }
-         
-      //    ),
-        
-      //FutureBuilder(
-      //   future: httpService.getJobs(),
-      //   builder: ( context, snapshot){
-      //     if (snapshot.hasData) {
-      //       List<Jobs> jobs = snapshot.data;
-      //       return ListView(
-      //         children:   jobs.map((Jobs jobs)=>
-      //         ListTile(
-      //           title: Text(jobs.first_name),
-      //           subtitle: Text(jobs.email),
-      //           leading: Image.network(jobs.avatar),
-      //         )
-      //         ).toList()
-      //       );
-          
-            
-      //     }else{
-      //       return CircularProgressIndicator();
-      //     }
-      //   }
-      //   ),
+
     );
   }
 }

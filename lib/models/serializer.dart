@@ -7,7 +7,7 @@ import 'package:built_collection/built_collection.dart';
 part 'serializer.g.dart';
 
 @SerializersFor(const[
-  Jobs,
+  Jobs
 ])
 final Serializers serializers = _$serializers;
 

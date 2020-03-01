@@ -19,6 +19,16 @@ class _$JobsSerializer implements StructuredSerializer<Jobs> {
   Iterable<Object> serialize(Serializers serializers, Jobs object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'page',
+      serializers.serialize(object.page, specifiedType: const FullType(int)),
+      'per_page',
+      serializers.serialize(object.per_page,
+          specifiedType: const FullType(int)),
+      'total',
+      serializers.serialize(object.total, specifiedType: const FullType(int)),
+      'total_pages',
+      serializers.serialize(object.total_pages,
+          specifiedType: const FullType(int)),
       'data',
       serializers.serialize(object.data,
           specifiedType:
@@ -39,6 +49,22 @@ class _$JobsSerializer implements StructuredSerializer<Jobs> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'page':
+          result.page = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'per_page':
+          result.per_page = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'total':
+          result.total = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'total_pages':
+          result.total_pages = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'data':
           result.data.replace(serializers.deserialize(value,
                   specifiedType:
@@ -67,11 +93,11 @@ class _$DataSerializer implements StructuredSerializer<Data> {
       'email',
       serializers.serialize(object.email,
           specifiedType: const FullType(String)),
-      'last_name',
-      serializers.serialize(object.last_name,
-          specifiedType: const FullType(String)),
       'first_name',
       serializers.serialize(object.first_name,
+          specifiedType: const FullType(String)),
+      'last_name',
+      serializers.serialize(object.last_name,
           specifiedType: const FullType(String)),
       'avatar',
       serializers.serialize(object.avatar,
@@ -100,12 +126,12 @@ class _$DataSerializer implements StructuredSerializer<Data> {
           result.email = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'last_name':
-          result.last_name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
         case 'first_name':
           result.first_name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'last_name':
+          result.last_name = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'avatar':
@@ -121,12 +147,33 @@ class _$DataSerializer implements StructuredSerializer<Data> {
 
 class _$Jobs extends Jobs {
   @override
+  final int page;
+  @override
+  final int per_page;
+  @override
+  final int total;
+  @override
+  final int total_pages;
+  @override
   final BuiltList<Data> data;
 
   factory _$Jobs([void Function(JobsBuilder) updates]) =>
       (new JobsBuilder()..update(updates)).build();
 
-  _$Jobs._({this.data}) : super._() {
+  _$Jobs._({this.page, this.per_page, this.total, this.total_pages, this.data})
+      : super._() {
+    if (page == null) {
+      throw new BuiltValueNullFieldError('Jobs', 'page');
+    }
+    if (per_page == null) {
+      throw new BuiltValueNullFieldError('Jobs', 'per_page');
+    }
+    if (total == null) {
+      throw new BuiltValueNullFieldError('Jobs', 'total');
+    }
+    if (total_pages == null) {
+      throw new BuiltValueNullFieldError('Jobs', 'total_pages');
+    }
     if (data == null) {
       throw new BuiltValueNullFieldError('Jobs', 'data');
     }
@@ -142,22 +189,52 @@ class _$Jobs extends Jobs {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Jobs && data == other.data;
+    return other is Jobs &&
+        page == other.page &&
+        per_page == other.per_page &&
+        total == other.total &&
+        total_pages == other.total_pages &&
+        data == other.data;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, data.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc(0, page.hashCode), per_page.hashCode), total.hashCode),
+            total_pages.hashCode),
+        data.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Jobs')..add('data', data)).toString();
+    return (newBuiltValueToStringHelper('Jobs')
+          ..add('page', page)
+          ..add('per_page', per_page)
+          ..add('total', total)
+          ..add('total_pages', total_pages)
+          ..add('data', data))
+        .toString();
   }
 }
 
 class JobsBuilder implements Builder<Jobs, JobsBuilder> {
   _$Jobs _$v;
+
+  int _page;
+  int get page => _$this._page;
+  set page(int page) => _$this._page = page;
+
+  int _per_page;
+  int get per_page => _$this._per_page;
+  set per_page(int per_page) => _$this._per_page = per_page;
+
+  int _total;
+  int get total => _$this._total;
+  set total(int total) => _$this._total = total;
+
+  int _total_pages;
+  int get total_pages => _$this._total_pages;
+  set total_pages(int total_pages) => _$this._total_pages = total_pages;
 
   ListBuilder<Data> _data;
   ListBuilder<Data> get data => _$this._data ??= new ListBuilder<Data>();
@@ -167,6 +244,10 @@ class JobsBuilder implements Builder<Jobs, JobsBuilder> {
 
   JobsBuilder get _$this {
     if (_$v != null) {
+      _page = _$v.page;
+      _per_page = _$v.per_page;
+      _total = _$v.total;
+      _total_pages = _$v.total_pages;
       _data = _$v.data?.toBuilder();
       _$v = null;
     }
@@ -190,7 +271,13 @@ class JobsBuilder implements Builder<Jobs, JobsBuilder> {
   _$Jobs build() {
     _$Jobs _$result;
     try {
-      _$result = _$v ?? new _$Jobs._(data: data.build());
+      _$result = _$v ??
+          new _$Jobs._(
+              page: page,
+              per_page: per_page,
+              total: total,
+              total_pages: total_pages,
+              data: data.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -213,16 +300,16 @@ class _$Data extends Data {
   @override
   final String email;
   @override
-  final String last_name;
-  @override
   final String first_name;
+  @override
+  final String last_name;
   @override
   final String avatar;
 
   factory _$Data([void Function(DataBuilder) updates]) =>
       (new DataBuilder()..update(updates)).build();
 
-  _$Data._({this.id, this.email, this.last_name, this.first_name, this.avatar})
+  _$Data._({this.id, this.email, this.first_name, this.last_name, this.avatar})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Data', 'id');
@@ -230,11 +317,11 @@ class _$Data extends Data {
     if (email == null) {
       throw new BuiltValueNullFieldError('Data', 'email');
     }
-    if (last_name == null) {
-      throw new BuiltValueNullFieldError('Data', 'last_name');
-    }
     if (first_name == null) {
       throw new BuiltValueNullFieldError('Data', 'first_name');
+    }
+    if (last_name == null) {
+      throw new BuiltValueNullFieldError('Data', 'last_name');
     }
     if (avatar == null) {
       throw new BuiltValueNullFieldError('Data', 'avatar');
@@ -254,16 +341,16 @@ class _$Data extends Data {
     return other is Data &&
         id == other.id &&
         email == other.email &&
-        last_name == other.last_name &&
         first_name == other.first_name &&
+        last_name == other.last_name &&
         avatar == other.avatar;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, id.hashCode), email.hashCode), last_name.hashCode),
-            first_name.hashCode),
+        $jc($jc($jc($jc(0, id.hashCode), email.hashCode), first_name.hashCode),
+            last_name.hashCode),
         avatar.hashCode));
   }
 
@@ -272,8 +359,8 @@ class _$Data extends Data {
     return (newBuiltValueToStringHelper('Data')
           ..add('id', id)
           ..add('email', email)
-          ..add('last_name', last_name)
           ..add('first_name', first_name)
+          ..add('last_name', last_name)
           ..add('avatar', avatar))
         .toString();
   }
@@ -290,13 +377,13 @@ class DataBuilder implements Builder<Data, DataBuilder> {
   String get email => _$this._email;
   set email(String email) => _$this._email = email;
 
-  String _last_name;
-  String get last_name => _$this._last_name;
-  set last_name(String last_name) => _$this._last_name = last_name;
-
   String _first_name;
   String get first_name => _$this._first_name;
   set first_name(String first_name) => _$this._first_name = first_name;
+
+  String _last_name;
+  String get last_name => _$this._last_name;
+  set last_name(String last_name) => _$this._last_name = last_name;
 
   String _avatar;
   String get avatar => _$this._avatar;
@@ -308,8 +395,8 @@ class DataBuilder implements Builder<Data, DataBuilder> {
     if (_$v != null) {
       _id = _$v.id;
       _email = _$v.email;
-      _last_name = _$v.last_name;
       _first_name = _$v.first_name;
+      _last_name = _$v.last_name;
       _avatar = _$v.avatar;
       _$v = null;
     }
@@ -335,8 +422,8 @@ class DataBuilder implements Builder<Data, DataBuilder> {
         new _$Data._(
             id: id,
             email: email,
-            last_name: last_name,
             first_name: first_name,
+            last_name: last_name,
             avatar: avatar);
     replace(_$result);
     return _$result;
